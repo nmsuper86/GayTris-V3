@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="win32">
+      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Entity">
+      <UniqueIdentifier>{4ea81d6d-fcd8-4aff-8581-9700bc5c77e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Manager">
+      <UniqueIdentifier>{bb21d78d-e5eb-4134-b78b-9c0dce1806af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Scene">
+      <UniqueIdentifier>{8fefe37b-9afd-45dd-a058-8b5929244265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Entity\Block">
+      <UniqueIdentifier>{0b9c0a36-3a7d-43f5-ab08-936d97af6d4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Entity\Block\BlockI">
+      <UniqueIdentifier>{7fb92efe-ae50-4da5-8590-50903f92b0bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Entity\Block\BlockL">
+      <UniqueIdentifier>{b6c37b0b-0528-4e95-b616-ad9796eb844c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Entity\Block\BlockLR">
+      <UniqueIdentifier>{3a9c0325-09ec-4bda-8133-c2ab115aa502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Entity\Block\BlockO">
+      <UniqueIdentifier>{6f58a13f-d664-4585-bad2-94a8b2137a0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Entity\Block\BlockT">
+      <UniqueIdentifier>{749a030f-95a0-4eef-8f54-7bffff564d68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Entity\Block\BlockZ">
+      <UniqueIdentifier>{4b1eb3aa-188a-4323-b28f-e556e6a25f1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Entity\Block\BlockZR">
+      <UniqueIdentifier>{1592f58f-9af8-44cd-91c0-6e74f361e9bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Manager\BlockManager">
+      <UniqueIdentifier>{30ad14a3-d1e1-49ce-9f42-78882dc93358}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Manager\DisplayManager">
+      <UniqueIdentifier>{445b29b4-9f34-48b5-b62d-e6bbca71f556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\Scene\TestScene">
+      <UniqueIdentifier>{ad9add02-c0f3-4604-a211-6789912b2d27}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>win32\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>win32\Entity\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockI.cpp">
+      <Filter>win32\Entity\Block\BlockI</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockL.cpp">
+      <Filter>win32\Entity\Block\BlockL</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockLR.cpp">
+      <Filter>win32\Entity\Block\BlockLR</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockO.cpp">
+      <Filter>win32\Entity\Block\BlockO</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockT.cpp">
+      <Filter>win32\Entity\Block\BlockT</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockZ.cpp">
+      <Filter>win32\Entity\Block\BlockZ</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockZR.cpp">
+      <Filter>win32\Entity\Block\BlockZR</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockManager.cpp">
+      <Filter>win32\Manager\BlockManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayManager.cpp">
+      <Filter>win32\Manager\DisplayManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>win32\Scene\TestScene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HelloWorldScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>win32\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>win32\Entity\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockI.h">
+      <Filter>win32\Entity\Block\BlockI</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockL.h">
+      <Filter>win32\Entity\Block\BlockL</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockLR.h">
+      <Filter>win32\Entity\Block\BlockLR</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockO.h">
+      <Filter>win32\Entity\Block\BlockO</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockT.h">
+      <Filter>win32\Entity\Block\BlockT</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockZ.h">
+      <Filter>win32\Entity\Block\BlockZ</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockZR.h">
+      <Filter>win32\Entity\Block\BlockZR</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockManager.h">
+      <Filter>win32\Manager\BlockManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplayManager.h">
+      <Filter>win32\Manager\DisplayManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>win32\Scene\TestScene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc">
+      <Filter>resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
