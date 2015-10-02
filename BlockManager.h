@@ -36,7 +36,6 @@ protected:
 	DisplayManger* m_boundDisplayManager;
 	SpriteBatchNode* m_spriteBatchNodeDeadBlocks;
 
-
 public: //系统调用
 
 	BlockManager();
@@ -68,7 +67,7 @@ protected: //私有自定义函数
 	virtual bool _blockShouldTryPeriodicalDrop(Block* p_block, int p_updateTime); //判断方块是否应该下落一次
 	virtual void _blockDonotTryDrop(Block* p_block); //不尝试下落
 	virtual void _blockDoTryMove(Block* p_block, Block::Direction p_direction); //尝试移动
-	virtual void _blockDoTryRequiredDrop(Block* p_block); //尝试触发下落
+//	virtual void _blockDoTryRequiredDrop(Block* p_block); //尝试触发下落
 	virtual void _blockDoTryTurn90Degrees(Block* p_block); //尝试旋转90度
 
 	virtual bool _blockCanMove(Block* p_block, Block::Direction p_direction); //判断方块是否可以向特定方向移动
@@ -99,6 +98,18 @@ protected: //私有自定义函数
 	} //判断该行是否已满
 	virtual void _isTetris(); //Tetris动画
 	virtual void _rePaintDeadBlocks(); //重绘dead blocks
+	static inline bool _isCellInCellPosition(Vec2 p_cell, Block::CellPosition p_position) //Is given Cell in given CellPosition or not
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (p_cell.x == p_position.points[i].x &&
+				p_cell.y == p_position.points[i].y)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 
 }; //class BlockManager

@@ -5,6 +5,7 @@
 
 #include "cocos2d.h"
 #include "BlockManager.h"
+#include "BlockManagerDoubleBlock.h"
 #include "DisplayManager.h"
 #include <windows.h>
 
@@ -17,14 +18,10 @@ public:
 	virtual bool init();
 	CREATE_FUNC(TestScene);
 
-	void update(float delta);
-
 private:
 	BlockManager* m_blockManager;
 	DisplayManger* m_displayManager;
 	EventListenerKeyboard* m_keyboardListener;
-
-	static TestScene* m_scene;
 
 };
 

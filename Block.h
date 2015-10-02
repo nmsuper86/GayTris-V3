@@ -65,6 +65,9 @@ public: //Custom functions
 	void setBlockData(Vec2 p_blockPoint, Vec2 p_stagePoint); //子类通过此函数设定blockData矩阵中的坐标值
 	BlockType getBlockType();
 	int getDegree();
+	Vec2 getCenterPointInMatrix();
+	void setIndex(int p_index);
+	int getIndex();
 
 }; //class Block
 

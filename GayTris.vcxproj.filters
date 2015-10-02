@@ -52,6 +52,9 @@
     <Filter Include="win32\Scene\TestScene">
       <UniqueIdentifier>{ad9add02-c0f3-4604-a211-6789912b2d27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="win32\Manager\BlockManager\BlockManagerDoubleBlock">
+      <UniqueIdentifier>{18efbfb3-0ef7-437c-b9f4-a4f337374eec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -99,6 +102,9 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>win32\Scene\TestScene</Filter>
     </ClCompile>
+    <ClCompile Include="BlockManagerDoubleBlock.cpp">
+      <Filter>win32\Manager\BlockManager\BlockManagerDoubleBlock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -145,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>win32\Scene\TestScene</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockManagerDoubleBlock.h">
+      <Filter>win32\Manager\BlockManager\BlockManagerDoubleBlock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

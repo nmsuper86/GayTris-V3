@@ -288,4 +288,38 @@ int Block::getDegree()
 	return this->m_degree;
 }
 
+Vec2 Block::getCenterPointInMatrix()
+{
+	Vec2 result;
+	result.x = this->m_position0_0.x + 2;
+	result.y = this->m_position0_0.y + 1;
+	return result;
+}
+
+void Block::setIndex(int p_index)
+{
+	if (this->m_index != p_index)
+	{
+		this->m_index = p_index;
+		this->m_position0_0 = this->m_manager->getBlockStartPosition0_0InMatrix(this->m_index);
+		for (int x = 0; x < 4; x++)
+		{
+			for (int y = 0; y < 4; y++)
+			{
+				if (this->m_blockData[x][y].x != -1)
+				{
+					this->m_blockData[x][y].x = this->m_position0_0.x + x;
+					this->m_blockData[x][y].y = this->m_position0_0.y + y;
+				}
+			}
+		}
+	}
+
+} //void Block::setIndex(int p_index)
+
+int Block::getIndex()
+{
+	return this->m_index;
+} //int Block::getIndex()
+
 

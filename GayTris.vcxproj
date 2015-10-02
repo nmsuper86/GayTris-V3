@@ -151,6 +151,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="BlockL.cpp" />
     <ClCompile Include="BlockLR.cpp" />
     <ClCompile Include="BlockManager.cpp" />
+    <ClCompile Include="BlockManagerDoubleBlock.cpp" />
     <ClCompile Include="BlockO.cpp" />
     <ClCompile Include="BlockT.cpp" />
     <ClCompile Include="BlockZ.cpp" />
@@ -168,6 +169,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="BlockL.h" />
     <ClInclude Include="BlockLR.h" />
     <ClInclude Include="BlockManager.h" />
+    <ClInclude Include="BlockManagerDoubleBlock.h" />
     <ClInclude Include="BlockO.h" />
     <ClInclude Include="BlockT.h" />
     <ClInclude Include="BlockZ.h" />

@@ -5,7 +5,18 @@
 
 BlockManager::BlockManager()
 {
+	//初始化单元状态矩阵
+	for (int x = 0; x < BlockManager::CellMatrixWidth; x++)
+	{
+		for (int y = 0; y < BlockManager::CellMatrixHeight; y++)
+		{
+			this->m_matrixCellState[x][y] = BlockManager::CellState::Empty;
+			this->m_matrixDeadBlockSprites[x][y] = NULL;
+		}
+	}
 
+	//设定默认更新频率
+	this->m_periodDropping = BlockManager::DefaultRefreshTime;
 } //BlockManager::BlockManager()
 
 BlockManager::~BlockManager()
@@ -51,19 +62,6 @@ bool BlockManager::init(Vec2 p_pointToDisplayOnScreen, DisplayManger* p_displayM
 		}
 		this->addChild(backgroundImage);
 
-		//初始化单元状态矩阵
-		for (int x = 0; x < BlockManager::CellMatrixWidth; x++)
-		{
-			for (int y = 0; y < BlockManager::CellMatrixHeight; y++)
-			{
-				this->m_matrixCellState[x][y] = BlockManager::CellState::Empty;
-				this->m_matrixDeadBlockSprites[x][y] = NULL;
-			}
-		}
-
-		//设定默认更新频率
-		this->m_periodDropping = BlockManager::DefaultRefreshTime;
-
 		//创建第一个块
 		this->m_blockWaiting = _createNewBlock();
 		this->m_blockWaiting->retain();
@@ -79,8 +77,6 @@ bool BlockManager::init(Vec2 p_pointToDisplayOnScreen, DisplayManger* p_displayM
 
 		//初始化已死方块批量精灵
 		this->m_spriteBatchNodeDeadBlocks = SpriteBatchNode::create("BlockDead.png", BlockManager::CellMatrixWidth * BlockManager::CellMatrixHeight);
-		// 		this->m_spriteBatchNodeDeadBlocks->setAnchorPoint(p(0.5, 0.5));
-		// 		this->m_spriteBatchNodeDeadBlocks->setPosition(this->getAnchorPoint());
 		if (this->m_spriteBatchNodeDeadBlocks == NULL)
 		{
 			bRet = false;
@@ -143,7 +139,7 @@ void BlockManager::triggerKeyboard(EventKeyboard::KeyCode p_valueKey)
 		break; //case VK_RIGHT
 
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-		this->_blockDoTryRequiredDrop(this->m_blockDropping);
+//		this->_blockDoTryRequiredDrop(this->m_blockDropping);
 		this->m_isDropReqiured = true;
 		break; //case VK_DOWN
 
@@ -173,8 +169,8 @@ void BlockManager::setUpdateTime(int p_updateTime)
 Vec2 BlockManager::convertBlockPositionToPixelPosition(Vec2 p_pointBlock)
 {
 	Vec2 pointResult;
-	pointResult.x = -BlockManager::CellMatrixWidth / 2 * Block::CellSize + p_pointBlock.x * Block::CellSize;
-	pointResult.y = BlockManager::CellMatrixHeight / 2 * Block::CellSize - (p_pointBlock.y + 1) * Block::CellSize;
+	pointResult.x = -this->CellMatrixWidth / 2 * Block::CellSize + p_pointBlock.x * Block::CellSize;
+	pointResult.y = this->CellMatrixHeight / 2 * Block::CellSize - (p_pointBlock.y + 1) * Block::CellSize;
 	return pointResult;
 } //Vec2 BlockManager::convertBlockToPixel(Vec2 blockPoint)
 
@@ -187,8 +183,9 @@ Vec2 BlockManager::getBlockStartPosition0_0InMatrix(int p_indexOfBlock)
 {
 	Vec2 result;
 	result.y = 0;
-	result.x = BlockManager::CellMatrixWidth / 2 - Block::BlockWidthCount / 2 + p_indexOfBlock * Block::BlockWidthCount;
+	result.x = this->CellMatrixWidth / 2 - Block::BlockWidthCount / 2;
 	return result;
+
 } //Vec2 BlockManager::getBlockStartPositionInMatrix(int p_indexOfBlock)
 
 #pragma endregion
@@ -204,7 +201,9 @@ Block* BlockManager::_createNewBlock()
 void BlockManager::_pushNewBlock()
 {
 	this->m_blockDropping = this->m_blockWaiting;
-	this->m_blockDropping->setPosition(this->convertBlockPositionToPixelPosition(Vec2(BlockManager::CellMatrixWidth / 2, Block::BlockWidthCount / 2 - 1)));
+	this->m_blockDropping->setPosition(
+		this->convertBlockPositionToPixelPosition(
+			this->m_blockDropping->getCenterPointInMatrix()));
 
 	Block::CellPosition position = this->m_blockDropping->getCellPosition();
 	for (int i = 0; i < 4; i++)
@@ -242,18 +241,6 @@ void BlockManager::_blockDoTryMove(Block* p_block, Block::Direction p_direction)
 	}
 } //void BlockManager::_doTryMove(Block::Direction direction)
 
-void BlockManager::_blockDoTryRequiredDrop(Block* p_block)
-{
-	if (!this->_blockShouldTryPeriodicalDrop(p_block, BlockManager::RequiredUpdateTime))
-	{
-		this->_blockDonotTryDrop(p_block);
-	}
-	else
-	{
-		this->_blockDoTryMove(p_block, Block::Direction::Down);
-	}
-} //void BlockManager::_doTryRequiredDrop()
-
 void BlockManager::_blockDoTryTurn90Degrees(Block* p_block)
 {
 	Block::BlockType blockType = p_block->getBlockType();
@@ -277,8 +264,15 @@ bool BlockManager::_blockCanMove(Block* p_block, Block::Direction p_direction)
 	case Block::Direction::Down:
 		for (int i = 0; i < 4; i++)
 		{
-			if ((position.points[i].y >= BlockManager::CellMatrixHeight - 1) ||
-				(this->m_matrixCellState[(int)position.points[i].x][(int)position.points[i].y + 1] == CellState::Dead))
+			if 
+			(
+				(position.points[i].y >= this->CellMatrixHeight - 1) ||
+				(this->m_matrixCellState[(int)position.points[i].x][(int)position.points[i].y + 1] == CellState::Dead) ||
+				(
+					this->m_matrixCellState[(int)position.points[i].x][(int)position.points[i].y + 1] == CellState::Dropping &&
+					!BlockManager::_isCellInCellPosition(Vec2(position.points[i].x, position.points[i].y + 1), position)
+				)
+			)
 			{
 				return false;
 			}
@@ -288,8 +282,15 @@ bool BlockManager::_blockCanMove(Block* p_block, Block::Direction p_direction)
 	case Block::Direction::Left:
 		for (int i = 0; i < 4; i++)
 		{
-			if ((position.points[i].x <= 0) ||
-				(this->m_matrixCellState[(int)position.points[i].x - 1][(int)position.points[i].y] == CellState::Dead))
+			if 
+			(
+				(position.points[i].x <= 0) ||
+				(this->m_matrixCellState[(int)position.points[i].x - 1][(int)position.points[i].y] == CellState::Dead) ||
+				(
+					this->m_matrixCellState[(int)position.points[i].x - 1][(int)position.points[i].y] == CellState::Dropping &&
+					!BlockManager::_isCellInCellPosition(Vec2(position.points[i].x - 1, position.points[i].y), position)
+				)
+			)
 			{
 				return false;
 			}
@@ -299,8 +300,16 @@ bool BlockManager::_blockCanMove(Block* p_block, Block::Direction p_direction)
 	case Block::Direction::Right:
 		for (int i = 0; i < 4; i++)
 		{
-			if ((position.points[i].x >= BlockManager::CellMatrixWidth - 1) ||
-				(this->m_matrixCellState[(int)position.points[i].x + 1][(int)position.points[i].y] == CellState::Dead))
+			if 
+			(
+				(position.points[i].x >= this->CellMatrixWidth - 1) ||
+				(this->m_matrixCellState[(int)position.points[i].x + 1][(int)position.points[i].y] == CellState::Dead) ||
+				(
+					this->m_matrixCellState[(int)position.points[i].x + 1][(int)position.points[i].y] == CellState::Dropping &&
+					!BlockManager::_isCellInCellPosition(Vec2(position.points[i].x + 1, position.points[i].y), position)
+				)
+			)
+
 			{
 				return false;
 			}
@@ -310,8 +319,15 @@ bool BlockManager::_blockCanMove(Block* p_block, Block::Direction p_direction)
 	case Block::Direction::Up:
 		for (int i = 0; i < 4; i++)
 		{
-			if ((position.points[i].y <= 0) ||
-				(this->m_matrixCellState[(int)position.points[i].x][(int)position.points[i].y - 1] == CellState::Dead))
+			if 
+			(
+				(position.points[i].y <= 0) ||
+				(this->m_matrixCellState[(int)position.points[i].x][(int)position.points[i].y - 1] == CellState::Dead) ||
+				(
+					this->m_matrixCellState[(int)position.points[i].x][(int)position.points[i].y - 1] == CellState::Dropping &&
+					!BlockManager::_isCellInCellPosition(Vec2(position.points[i].x, position.points[i].y - 1), position)
+				)
+			)
 			{
 				return false;
 			}
@@ -331,22 +347,22 @@ void BlockManager::_blockDoMove(Block* p_block, Block::Direction p_direction)
 
 	if (p_direction == Block::Direction::Down)
 	{
-		float y = this->m_blockDropping->getPositionY();
+		float y = p_block->getPositionY();
 		p_block->setPositionY((int)y - Block::CellSize);
 	}
 	else if (p_direction == Block::Direction::Left)
 	{
-		float x = this->m_blockDropping->getPositionX();
+		float x = p_block->getPositionX();
 		p_block->setPositionX((int)x - Block::CellSize);
 	}
 	else if (p_direction == Block::Direction::Right)
 	{
-		float x = this->m_blockDropping->getPositionX();
+		float x = p_block->getPositionX();
 		p_block->setPositionX((int)x + Block::CellSize);
 	}
 	else
 	{
-		float y = this->m_blockDropping->getPositionY();
+		float y = p_block->getPositionY();
 		p_block->setPositionY((int)y + Block::CellSize);
 	}
 } //void BlockManager::_currentBlockDoDrop()
@@ -362,14 +378,12 @@ void BlockManager::_blockStopDrop(Block* p_block)
 	this->_rePaintDeadBlocks();
 	this->_eliminateLines();
 
-	this->removeChild(p_block, false);
+	this->removeChild(p_block, true);
 
 	if (p_block)
 	{
 		p_block->autorelease();
 	}
-
-//	this->m_blockDropping = NULL;
 
 	this->_pushNewBlock();
 
@@ -394,8 +408,8 @@ bool BlockManager::_blockCanTurn90Degrees(Block* p_block)
 	{
 		if (turnedPosition.points[i].x < 0 ||
 			turnedPosition.points[i].y < 0 ||
-			turnedPosition.points[i].x > BlockManager::CellMatrixWidth - 1 ||
-			turnedPosition.points[i].y > BlockManager::CellMatrixHeight - 1 ||
+			turnedPosition.points[i].x > this->CellMatrixWidth - 1 ||
+			turnedPosition.points[i].y > this->CellMatrixHeight - 1 ||
 			this->m_matrixCellState[(int)turnedPosition.points[i].x][(int)turnedPosition.points[i].y] == BlockManager::CellState::Dead)
 		{
 			return false;
@@ -476,7 +490,7 @@ int BlockManager::_eliminateLines()
 	int lineCounter = 0;
 	int lineNums[Block::BlockWidthCount];
 
-	for (int i = 0; i < BlockManager::CellMatrixHeight; i++)
+	for (int i = 0; i < this->CellMatrixHeight; i++)
 	{
 		if (this->_isLineFilled(i))
 		{
@@ -523,7 +537,7 @@ void BlockManager::_endGame()
   //Unfinished
 void BlockManager::_eliminateSingleLine(int lineNum)
 {
-	for (int x = 0; x < BlockManager::CellMatrixWidth; x++)
+	for (int x = 0; x < this->CellMatrixWidth; x++)
 	{
 		for (int y = lineNum; y >= 0; y--)
 		{
@@ -551,9 +565,9 @@ void BlockManager::_rePaintDeadBlocks()
 {
 	this->m_spriteBatchNodeDeadBlocks->removeAllChildren();
 
-	for (int x = 0; x < BlockManager::CellMatrixWidth; x++)
+	for (int x = 0; x < this->CellMatrixWidth; x++)
 	{
-		for (int y = 0; y < BlockManager::CellMatrixHeight; y++)
+		for (int y = 0; y < this->CellMatrixHeight; y++)
 		{
 			if (this->m_matrixCellState[x][y] == CellState::Dead)
 			{
